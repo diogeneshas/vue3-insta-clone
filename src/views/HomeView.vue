@@ -1,8 +1,10 @@
-<script setup>
-</script>
-
 <template>
   <main>
-    <TheWelcome />
+    <Timeline />
   </main>
 </template>
+
+<script setup>
+import Timeline from "../components/Timeline.vue"
+</script>
+
