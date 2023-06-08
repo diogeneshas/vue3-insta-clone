@@ -2,6 +2,10 @@
   <div>
     <a-button type="primary" @click="showModal" class="btn">{{ title }}</a-button>
     <a-modal v-model:visible="visible" :title="title" @ok="handleOk">
+      <template #footer>
+        <a-button key="back" @click="handleCancel">Cancel</a-button>
+        <a-button key="submit" type="primary" :loading="loading" @click="handleOk">Submit</a-button>
+      </template>
       <a-input v-model:value="userCredentials.username" v-if="!isLogin" placeholder="Username" class="input" />
       <a-input v-model:value="userCredentials.email" placeholder="Email" class="input" />
       <a-input v-model:value="userCredentials.password" placeholder="Password" class="input" type="password"/>
@@ -40,6 +44,11 @@ import { storeToRefs } from "pinia"
     userStore.handleSignup(userCredentials)
     // visible.value = false;
   };
+
+  const handleCancel = () => {
+    userStore.clearErrorMessage()
+    visible.value = false;
+  }
 
 </script>
 
