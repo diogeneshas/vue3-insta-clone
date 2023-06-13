@@ -27,7 +27,7 @@ import { storeToRefs } from "pinia"
 
   const userStore = useUserStore()
 
-  const {errorMessage, loading} = storeToRefs(userStore)
+  const {errorMessage, loading, user} = storeToRefs(userStore)
 
   const props = defineProps(['isLogin'])
 
@@ -45,9 +45,16 @@ import { storeToRefs } from "pinia"
     visible.value = true;
   };
 
-  const handleOk = e => {
-    userStore.handleSignup(userCredentials)
-    // visible.value = false;
+  const handleOk = async e => {
+    await userStore.handleSignup(userCredentials)
+    if(user.value) {
+      visible.value = false
+      userCredentials.email = ''
+      userCredentials.password = ''
+      userCredentials.username = ''
+      userStore.clearErrorMessage()
+    }
+
   };
 
   const handleCancel = () => {

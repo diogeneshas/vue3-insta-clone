@@ -60,6 +60,14 @@ export const useUserStore = defineStore('users', () => {
       email
     })
 
+    const {data: newUser } = await supabase.from("users").select().eq('email', email).single()
+
+    user.value = {
+      id: newUser.id,
+      email: newUser.email,
+      username: newUser.username
+    }
+
     loading.value = false
   }
 
@@ -75,5 +83,5 @@ export const useUserStore = defineStore('users', () => {
     errorMessage.value = ""
   }
 
-  return { user, errorMessage, handleLogin, handleSignup, handleLogout, getUser, clearErrorMessage, loading }
+  return { user, errorMessage, handleLogin, handleSignup, handleLogout, getUser, clearErrorMessage, loading, user }
 })
