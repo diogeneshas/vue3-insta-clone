@@ -4,11 +4,16 @@
     <a-modal v-model:visible="visible" :title="title" @ok="handleOk">
       <template #footer>
         <a-button key="back" @click="handleCancel">Cancel</a-button>
-        <a-button key="submit" type="primary" :loading="loading" @click="handleOk">Submit</a-button>
+        <a-button key="submit" type="primary" :loading="loading" @click="handleOk" :disabled="loading">Submit</a-button>
       </template>
-      <a-input v-model:value="userCredentials.username" v-if="!isLogin" placeholder="Username" class="input" />
-      <a-input v-model:value="userCredentials.email" placeholder="Email" class="input" />
-      <a-input v-model:value="userCredentials.password" placeholder="Password" class="input" type="password"/>
+      <div class="input-container" v-if="!loading">
+        <a-input v-model:value="userCredentials.username" v-if="!isLogin" placeholder="Username" class="input" />
+        <a-input v-model:value="userCredentials.email" placeholder="Email" class="input" />
+        <a-input v-model:value="userCredentials.password" placeholder="Password" class="input" type="password"/>
+      </div>
+      <div class="spinner" v-else>
+        <a-spin />
+      </div>
       <a-typography-text v-if="errorMessage" type="danger">{{ errorMessage }}</a-typography-text>
     </a-modal>
   </div>
@@ -22,7 +27,7 @@ import { storeToRefs } from "pinia"
 
   const userStore = useUserStore()
 
-  const {errorMessage} = storeToRefs(userStore)
+  const {errorMessage, loading} = storeToRefs(userStore)
 
   const props = defineProps(['isLogin'])
 
